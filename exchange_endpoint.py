@@ -143,7 +143,7 @@ def fill_order(order, txes=[]):
                                     creator_id=child_order['creator_id'])
             g.session.add(child_order_obj)
             g.session.commit()
-            
+
 
         elif existing_order_sell_amount > buy_amount:
             final_sell_amount = sell_amount
@@ -177,8 +177,9 @@ def fill_order(order, txes=[]):
 
             g.session.add(child_order_obj)
             g.session.commit()
-        
-        txes.append(order,child_order)
+
+        txes.append(order)
+        txes.append(child_order)
 
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
@@ -245,7 +246,7 @@ def trade():
             order['sell_amount'] = sell_amount
 
         # TODO: Fill the order
-            txes = {}
+            txes = []
             fill_order(order, txes)
             result = True
         else:
@@ -277,7 +278,6 @@ def order_book():
     result = dict.fromkeys(keyList2)
     result['data'] = initial_result
     return jsonify(result)
-
 
 if __name__ == '__main__':
     app.run(port='5002')
