@@ -36,9 +36,10 @@ def shutdown_session(response_or_exc):
 
 
 def check_sig(payload, sig):
-
-    platform = payload['platform']
-    pk = payload['sender_pk']
+    
+    payload_dict = json.loads(payload)
+    platform = payload_dict['platform']
+    pk = payload_dict['sender_pk']
 
     verification_result = False
 
@@ -143,8 +144,7 @@ def fill_order(order, txes=[]):
                                     creator_id=child_order['creator_id'])
             g.session.add(child_order_obj)
             g.session.commit()
-            txes.append(order)
-            txes.append(child_order)
+
 
         elif existing_order_sell_amount > buy_amount:
             final_sell_amount = sell_amount
@@ -178,9 +178,9 @@ def fill_order(order, txes=[]):
 
             g.session.add(child_order_obj)
             g.session.commit()
-            txes.append(order)
-            txes.append(child_order)
-        
+
+        txes.append(order)
+        txes.append(child_order)
 
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
