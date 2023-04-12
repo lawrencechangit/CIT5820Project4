@@ -143,7 +143,8 @@ def fill_order(order, txes=[]):
                                     creator_id=child_order['creator_id'])
             g.session.add(child_order_obj)
             g.session.commit()
-
+            txes.append(order)
+            txes.append(child_order)
 
         elif existing_order_sell_amount > buy_amount:
             final_sell_amount = sell_amount
@@ -177,9 +178,9 @@ def fill_order(order, txes=[]):
 
             g.session.add(child_order_obj)
             g.session.commit()
-
-        txes.append(order)
-        txes.append(child_order)
+            txes.append(order)
+            txes.append(child_order)
+        
 
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
